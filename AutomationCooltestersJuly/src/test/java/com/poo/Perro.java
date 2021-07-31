@@ -59,10 +59,19 @@ public class Perro {
 	// metodo para imprimir datos del Perro
 	
 	public void imprimir () {
-		System.out.println("el numero de patas es: "+numPatas);
-		System.out.println("El color del perro es: "+Color);
-		System.out.println("El tamaño del perro es: "+tamaño);
-		System.out.println("La razo del Perro es: "+raza);
+		System.out.println("el numero de patas es: "+getNumPatas());
+		System.out.println("El color del perro es: "+getColor());
+		System.out.println("El tamaño del perro es: "+getTamaño());
+		System.out.println("La razo del Perro es: "+getRaza());
+	}
+	
+	// metodo para setear info del perro
+	
+	public void ingresar (int x, String x1, String x2, String x3) {
+		setNumPatas(x);
+		setColor(x1);
+		setTamaño(x2);
+		setRaza(x3);
 	}
 	
 

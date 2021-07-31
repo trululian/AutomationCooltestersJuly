@@ -8,8 +8,11 @@ public class MAIN {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
+		System.out.println("antes de cambios");
 		labrador.imprimir();
-		Chihuaha.imprimir();
+		System.out.println("despues de cambios");
+		labrador.ingresar(4, "cafe", "pequeño", "labrador mezclado]");
+		labrador.imprimir();
 	}
 
 }
