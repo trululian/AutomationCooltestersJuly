@@ -12,6 +12,11 @@ public class Metodos {
 		int sumtotal = x + y;
 		System.out.println("la suma es " + sumtotal);
 	}
+	
+	public static void suma(int x, int y, int z) {
+		int sumtotal = x + y+z;
+		System.out.println("la suma es " + sumtotal);
+	}
 
 	public static void contador(int x) {
 
@@ -23,6 +28,7 @@ public class Metodos {
 	public static void wrappedMethod(int a, int b, int c) {
 		contador(a);
 		suma(b, c);
+		suma (b,c,6);
 	}
 
 }
