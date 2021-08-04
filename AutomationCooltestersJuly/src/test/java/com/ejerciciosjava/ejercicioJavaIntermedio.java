@@ -4,10 +4,10 @@ public class ejercicioJavaIntermedio {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		
+
 		arregloBidireccional();
 	}
-	
+
 	public static void arregloBidireccional() {
 		String[][] nombreCompleto = new String[4][2];
 		nombreCompleto[0][0] = "Ricardo";
@@ -24,8 +24,12 @@ public class ejercicioJavaIntermedio {
 
 		for (int i = 0; i < nombreCompleto.length; i++) {
 			for (int j = 0; j < nombreCompleto[i].length; j++) {
-				System.out.println("El nombre es " + nombreCompleto[i][j] + " "+ nombreCompleto[i][j+=1]);
+				System.out.println("El nombre es " + nombreCompleto[i][j] + " " + nombreCompleto[i][j += 1]);
 			}
+		}
+
+		for (int i2 = 0; i2 < nombreCompleto.length; i2++) {
+			System.out.println("el nombre es " + nombreCompleto[i2][0] + " " + nombreCompleto[i2][1]);
 		}
 
 	}
