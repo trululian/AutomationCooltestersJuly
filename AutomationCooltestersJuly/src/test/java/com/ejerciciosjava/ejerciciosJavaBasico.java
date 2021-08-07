@@ -25,11 +25,10 @@ public class ejerciciosJavaBasico {
 
 		if (!verano && (tempreatura >= 25 && tempreatura <= 35)) {
 			return true;
-		} else if (verano && (tempreatura >= 25 && tempreatura <= 45)) {
+		} else if (tempreatura >= 25 && tempreatura <= 45) {
 			return true;
-		} else {
+		} 
 			return false;
-		}
 	}// corchete final isCatPlaying
 
 	static void imprimirVerificadorNumeros(int x, int y, int z) {
