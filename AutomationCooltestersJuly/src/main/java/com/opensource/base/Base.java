@@ -1,9 +1,24 @@
 package com.opensource.base;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+
+import javax.imageio.ImageIO;
+
 import java.util.Random;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.openqa.selenium.By;
 import org.openqa.selenium.By.ByXPath;
 import org.openqa.selenium.NoSuchElementException;
@@ -15,6 +30,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.asserts.SoftAssert;
+
+import ru.yandex.qatools.ashot.AShot;
+import ru.yandex.qatools.ashot.Screenshot;
 
 public class Base {
 
@@ -49,6 +67,104 @@ public class Base {
 		System.setProperty(GlobalVariables.CHROME_DRIVER_KEY, GlobalVariables.CHROME_DRIVER_NAME);
 		driver = new ChromeDriver();
 		return driver;
+	}
+
+	/**
+	 * Get Data from JSON file (Directly)
+	 *
+	 * @author Julian Pardo
+	 * @param jsonFile, jsonKey
+	 * @return jsonValue
+	 * @throws FileNotFoundException
+	 */
+	public String getJSONValue(String jsonFileObj, String jsonKey) {
+		try {
+
+			// JSON Data
+			InputStream inputStream = new FileInputStream(GlobalVariables.PATH_JSON_DATA + jsonFileObj + ".json");
+			JSONObject jsonObject = new JSONObject(new JSONTokener(inputStream));
+
+			// Get Data
+			String jsonValue = (String) jsonObject.getJSONObject(jsonFileObj).get(jsonKey);
+			return jsonValue;
+
+		} catch (FileNotFoundException e) {
+			Assert.fail("JSON file is not found");
+			return null;
+		}
+	}
+
+	/*
+	 * Get Value from Excel
+	 * 
+	 * @author Julian Pardo
+	 * 
+	 * @date 02/18/2019
+	 */
+	public String getCellData(String excelName, int row, int column) {
+		try {
+			// Reading Data
+			FileInputStream fis = new FileInputStream(GlobalVariables.PATH_EXCEL_DATA + excelName + ".xlsx");
+			// Constructs an XSSFWorkbook object
+			@SuppressWarnings("resource")
+			Workbook wb = new XSSFWorkbook(fis);
+			Sheet sheet = wb.getSheetAt(0);
+			Row rowObj = sheet.getRow(row);
+			Cell cell = rowObj.getCell(column);
+			String value = cell.getStringCellValue();
+			return value;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			return null;
+		}
+	}
+
+	public String createScreenshotsDIR(String x) {
+		
+		File theDir = new File(GlobalVariables.PATH_SCREENSHOTS+x);
+		if (!theDir.exists()){
+		    theDir.mkdirs();
+		   return theDir.getPath();
+		}else {
+			return theDir.getPath();
+		}
+	}
+	
+	public String takeScreenshot(String fileName, String TCpathname) {
+		try {
+			String pathFileName = TCpathname +"/"+ fileName + ".png";
+			Screenshot screenshot = new AShot().takeScreenshot(driver);
+			ImageIO.write(screenshot.getImage(), "PNG", new File(pathFileName));
+			System.out.println(pathFileName);
+			return pathFileName;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+
+	}
+
+	/*
+	 * Take screenshot
+	 *
+	 * @author Ricardo Avalos
+	 * 
+	 * @throws IOException
+	 */
+	public String takeScreenshot2(String fileName) {
+		try {
+			String pathFileName = GlobalVariables.PATH_SCREENSHOTS + fileName + ".png";
+			Screenshot screenshot = new AShot().takeScreenshot(driver);
+			ImageIO.write(screenshot.getImage(), "PNG", new File(pathFileName));
+			return pathFileName;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+
 	}
 
 	/*
@@ -111,16 +227,16 @@ public class Base {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/*
 	 * Wait x seconds
 	 * 
 	 * @Author Julian Pardo
 	 */
 
-	public void waitTimeInSconds(int seconds){
+	public void waitTimeInSconds(int seconds) {
 		try {
-			Thread.sleep(seconds*1000);
+			Thread.sleep(seconds * 1000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -220,7 +336,7 @@ public class Base {
 					+ expectedValue);
 		}
 	}
-	
+
 	/*
 	 * Hard Assert Method(boolean)
 	 */
@@ -250,7 +366,7 @@ public class Base {
 	 * SoftAssert Method(String)
 	 */
 
-	public SoftAssert softAssertequalsBase( String actualValue,  String expectedValue) {
+	public SoftAssert softAssertequalsBase(String actualValue, String expectedValue) {
 		SoftAssert soft = new SoftAssert();
 		try {
 			soft.assertEquals(actualValue, expectedValue);
@@ -260,11 +376,11 @@ public class Base {
 					+ expectedValue);
 			return null;
 		}
-		
+
 	}
 
 	/*
-	 * SoftAssert Method(String)
+	 * already existing
 	 */
 
 	public String AlreadyExistingUserName(By locator, String x) {
@@ -277,30 +393,27 @@ public class Base {
 		}
 
 	}
-	
-	
+
 	/*
 	 * read table Method(String)
 	 */
-	public String findValueinTable (String inputValue, By locator) {
-		//table[@id = 'resultTable']/tbody//*[text()='Enabled']
+	public String findValueinTable(String inputValue, By locator) {
+		// table[@id = 'resultTable']/tbody//*[text()='Enabled']
 		String aux = locator.toString();
 		int x = aux.indexOf("/");
 		aux = aux.substring(x);
-		locator = By.xpath(aux+"/tbody//*[text()='"+inputValue+"']");
+		locator = By.xpath(aux + "/tbody//*[text()='" + inputValue + "']");
 		assertequalsBase(isDisplayed(locator), true);
 		return getText(locator);
-		
+
 	}
-	
+
 	/*
-	 * Reporter.log("Verify username exist in table");
-		String ActualValue = driver.findElement(By.xpath("//tbody/tr[1]/td[2]")).getText();
-		// Assert.assertEquals(ActualValue, "Admin");
-		soft.assertEquals(ActualValue, "Admin");
-		soft.assertAll();
-	*/
-	
+	 * Reporter.log("Verify username exist in table"); String ActualValue =
+	 * driver.findElement(By.xpath("//tbody/tr[1]/td[2]")).getText(); //
+	 * Assert.assertEquals(ActualValue, "Admin"); soft.assertEquals(ActualValue,
+	 * "Admin"); soft.assertAll();
+	 */
 
 	/*
 	 * read table Method(String)
@@ -310,16 +423,15 @@ public class Base {
 		String aux = locator.toString();
 		int x = aux.indexOf("/"), y;
 		aux = aux.substring(x);
-		int rows = driver.findElements(By.xpath(aux+"/tbody/tr")).size();
-		x = Ran.nextInt(rows-1) + 1;
+		int rows = driver.findElements(By.xpath(aux + "/tbody/tr")).size();
+		x = Ran.nextInt(rows - 1) + 1;
 		y = Ran.nextInt(5) + 2;
-		locator = By.xpath(aux+"/tbody/tr["+x+"]/td["+y+"]");
-		aux = "Random value found: " +getText(locator);
+		locator = By.xpath(aux + "/tbody/tr[" + x + "]/td[" + y + "]");
+		aux = "Random value found: " + getText(locator);
 		click(locator);
 		return aux;
 	}
-	
-	
+
 	/*
 	 * read table Method(String)
 	 */
@@ -329,13 +441,13 @@ public class Base {
 		String aux = locator.toString();
 		int x = aux.indexOf("/");
 		aux = aux.substring(x);
-		int rows = driver.findElements(By.xpath(aux+"/tbody/tr")).size();
+		int rows = driver.findElements(By.xpath(aux + "/tbody/tr")).size();
 		x = Ran.nextInt(rows) + 1;
-		for(int i = 0; i<aux2.length;i++) {
-			locator = By.xpath(aux+"/tbody/tr["+x+"]/td["+(i+2)+"]");
-			aux2[i]= getText(locator);
+		for (int i = 0; i < aux2.length; i++) {
+			locator = By.xpath(aux + "/tbody/tr[" + x + "]/td[" + (i + 2) + "]");
+			aux2[i] = getText(locator);
 		}
-		
+
 		return aux2;
 	}
 

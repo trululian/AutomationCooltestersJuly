@@ -18,6 +18,7 @@ public class AdminPage extends Base {
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}
+	String pathString;
 	SoftAssert soft;
 	By imgHeaderOrange = By.xpath("//img[@alt='OrangeHRM']");
 	By lnkAdmin = By.xpath("//a[@id='menu_admin_viewAdminModule']");
@@ -37,6 +38,10 @@ public class AdminPage extends Base {
 	By tableUserTableAdminPage = By.xpath("//table[@id = 'resultTable']");
 			
 
+	public void updatePath(String x) {
+		pathString = x;
+		System.out.println(x);
+	}
 	public void ValidateLogin() {
 		Reporter("Validate login was succesful");
 		waitForElementPresent(imgHeaderOrange);
@@ -50,12 +55,14 @@ public class AdminPage extends Base {
 		click(lnkAdmin);
 		implicityWait(5);
 		assertequalsBase(isDisplayed(tableUserTableAdminPage),true);
+		takeScreenshot("Admin clicked",pathString);
 	}
 
 	public void Clicksearch() {
 		Reporter("Click search button");
 		click(btnSearchButton);
 		implicityWait(5);
+		takeScreenshot("search clicked",pathString);
 	}
 
 	public void searchUser(String username) {

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="regression" parallel="tests" thread-count="3">
+	<test name="TC001">
+		<classes>
+			<class name="com.opensource.admin.qa.TC001" />
+		</classes>
+	</test> <!-- Test -->
+	<test name="TC002">
+		<classes>
+			<class name="com.opensource.admin.qa.TC002" />
+		</classes>
+	</test> <!-- Test -->
+	<test name="TC003">
+		<classes>
+			<class name="com.opensource.admin.qa.TC003" />
+		</classes>
+	</test> <!-- Test -->
+	<test name="TC004">
+		<classes>
+			<class name="com.opensource.admin.qa.TC004" />
+		</classes>
+	</test> <!-- Test -->
+	<test name="TC005">
+		<classes>
+			<class name="com.opensource.admin.qa.TC005" />
+		</classes>
+	</test> <!-- Test -->
+</suite> <!-- Suite -->
