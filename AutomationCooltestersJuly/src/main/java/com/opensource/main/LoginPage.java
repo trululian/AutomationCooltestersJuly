@@ -1,4 +1,4 @@
-package com.opensource.admin;
+package com.opensource.main;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -16,19 +16,19 @@ public class LoginPage extends Base {
 	/*
 	 * Objects
 	 */
-	
+
 	By txtUsername = By.xpath("//input [@id='txtUsername']");
 	By txtPassword = By.xpath("//input [@id='txtPassword']");
 	By btnLogin = By.xpath("//input [@id='btnLogin']");
 	By lnkWelcome = By.xpath("// a [@id = 'welcome']");
 	By lnkLogOut = By.xpath("// a [contains(text(), 'Logout')]");
-	
+
 	/*
 	 * Login OrangeHM
-	 * @Author Julian . Pardo
-	 * Date: 14/08/2021
+	 * 
+	 * @Author Julian . Pardo Date: 14/08/2021
 	 */
-	
+
 	public void LoginOrangeHM(String user, String Password) {
 		Reporter.log("Enter Username and Password");
 		type(txtUsername, user);
@@ -36,12 +36,11 @@ public class LoginPage extends Base {
 		click(btnLogin);
 		implicityWait();
 	}
-	
+
 	public void LogOut() {
 		Reporter("Loggin out...");
 		click(lnkWelcome);
+		waitForElementPresent(lnkLogOut);
 		click(lnkLogOut);
-		implicityWait();
-		CloseBrowser();
 	}
 }
