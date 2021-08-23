@@ -47,6 +47,7 @@ public class LoginPage extends Base {
 		Reporter("Loggin out...");
 		click(lnkWelcome);
 		waitForElementPresent(lnkLogOut);
+		takeScreenshot("log out", pathString);
 		click(lnkLogOut);
 	}
 }

@@ -16,7 +16,7 @@ public class TC003 {
 	Base base;
 	LoginPage login;
 	AdminPage admin;
-	String Username, Password, user_Existing, new_User_name, path;
+	String Username, Password, user_Existing, new_User_name, path, Role, status;
 	
 	@BeforeTest
 	  public void beforeTest() {
@@ -29,16 +29,20 @@ public class TC003 {
 		  admin.updatePath(path);
 		  login.updatePath(path);
 		  //Test Data Con Json
-//		  this.Username = base.getJSONValue("Orange_test_POM", "Username");
-//		  this.Password = base.getJSONValue("Orange_test_POM", "Password");
-//		  this.user_Existing = base.getJSONValue("Orange_test_POM", "user_Existing");
-//		  this.new_User_name = base.getJSONValue("Orange_test_POM","new_User_name");
+//		  this.Username = base.getJSONValue("General", "Username");
+//		  this.Password = base.getJSONValue("General", "Password");
+//		  this.user_Existing = base.getJSONValue("TC003", "user_Existing");
+//		  this.new_User_name = base.getJSONValue("TC003","new_User_name");
+//		  this.Role = base.getJSONValue("TC003","Role");
+//		  this.status = base.getJSONValue("TC003","Status");		  
 		  
 		//Test Data Con excel
 		  this.Username = base.getCellData("Orange_test_POM", 2, 0);
 		  this.Password = base.getCellData("Orange_test_POM", 2, 1);
 		  this.user_Existing = base.getCellData("Orange_test_POM", 2, 4);
 		  this.new_User_name = base.getCellData("Orange_test_POM", 2, 5);
+		  this.Role = base.getCellData("Orange_test_POM", 2, 6);
+		  this.status = base.getCellData("Orange_test_POM", 2, 7);
 	  }
 	
 	@Test
@@ -48,7 +52,9 @@ public class TC003 {
 		  base.lunchBrowser(GlobalVariables.QA_url);
 		  login.LoginOrangeHM(Username, Password);
 		  admin.ValidateLogin();
-		  new_User_name = admin.addNewUser(new_User_name, user_Existing, Password); 
+		  //new_User_name = admin.addNewUser(new_User_name, user_Existing, Password);
+		  //admin.Save_validation();
+		  admin.addNewUser2(new_User_name, user_Existing, Password, Role, status);
 		  admin.Save_validation();
 		  admin.ValidateUserInTableAfterClick(new_User_name);
 		  login.LogOut();

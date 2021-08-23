@@ -10,15 +10,15 @@ import com.opensource.base.Base;
 import com.opensource.base.GlobalVariables;
 import com.opensource.main.LoginPage;
 
-public class TC002 {
+public class TC006 {
 
 	WebDriver driver;
 	Base base;
 	LoginPage login;
 	AdminPage admin;
-	String Username, UsernameTC002, Password, path;
+	String Username, Password, userToDelete, path;
 	
-	 @BeforeTest
+	@BeforeTest
 	  public void beforeTest() {
 		  //Set up driver
 		  base = new Base(driver);
@@ -28,37 +28,36 @@ public class TC002 {
 		  this.path = base.createScreenshotsDIR(this.getClass().getName());
 		  admin.updatePath(path);
 		  login.updatePath(path);
-		  //Test Data Con Json
-		  this.Username = base.getJSONValue("General", "Username");
-		  this.Password = base.getJSONValue("General", "Password");
-		  this.UsernameTC002 = base.getJSONValue("TC002", "UsernameTC002");
 		  
- 
+		  // test data Json
+//		  this.Username = base.getJSONValue("General", "Username");
+//		  this.Password = base.getJSONValue("General", "Password");
+//		  this.userToDelete = base.getJSONValue("TC006", "UserToDelete");
+		  //Test Data Con excel
+		  this.Username = base.getCellData("Orange_test_POM", 2, 0);
+		  this.Password = base.getCellData("Orange_test_POM", 2, 1);
+		  this.userToDelete = base.getCellData("Orange_test_POM", 2, 8);
 		  
-		//Test Data Con excel
-//		  this.Username = base.getCellData("Orange_test_POM", 2, 0);
-//		  this.Password = base.getCellData("Orange_test_POM", 2, 1);
-//		  this.UsernameTC002 = base.getCellData("Orange_test_POM", 2, 2);
-//		  this.errorMsg = base.getCellData("Orange_test_POM", 2, 3);
-		  
-	  }
-	 
+	}
+	
+	
 	 @Test
 	  
 	  public void test() {
 		  base.lunchBrowser(GlobalVariables.QA_url);
 		  login.LoginOrangeHM(Username, Password);
 		  admin.ValidateLogin();
-		  admin.ClickAdmin();
-		  admin.ValidateUserInNOTTableAfterClick(UsernameTC002);
+		  admin.deleteUser(userToDelete);
 		  login.LogOut();
 	  }
-	 
-	 @AfterTest
+	
+	
+	@AfterTest
 	  
 	  public void afterTest() {
 		  base.implicityWait(2);
 		  base.CloseBrowser();
 	  }
+	
 	
 }

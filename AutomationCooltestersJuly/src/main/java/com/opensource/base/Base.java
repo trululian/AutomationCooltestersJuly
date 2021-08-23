@@ -1,5 +1,7 @@
 package com.opensource.base;
 
+import java.awt.AWTException;
+import java.awt.Robot;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -22,10 +24,12 @@ import org.json.JSONTokener;
 import org.openqa.selenium.By;
 import org.openqa.selenium.By.ByXPath;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.Reporter;
@@ -246,6 +250,20 @@ public class Base {
 	 * Lunch browser method
 	 */
 
+	public void SelectFromList(By locator, String index) {
+		Select select = new Select (driver.findElement(locator));
+		try {
+			select.selectByVisibleText(index);
+			//select.selectByValue(index);
+		} catch (NoSuchElementException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/*
+	 * Lunch browser method
+	 */
+
 	public void lunchBrowser(String url) {
 		implicityWait();
 		Reporter(GlobalVariables.LUNCH_BROWSER_DESC + url);
@@ -253,7 +271,7 @@ public class Base {
 		driver.manage().window().maximize();
 		implicityWait();
 	}
-
+	
 	/*
 	 * (Send Keys) Type method
 	 */
@@ -294,6 +312,8 @@ public class Base {
 		}
 
 	}
+	
+	
 
 	/*
 	 * is Displayed method

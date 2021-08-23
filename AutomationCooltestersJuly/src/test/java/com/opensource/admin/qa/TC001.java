@@ -31,13 +31,13 @@ public class TC001 {
 	  admin.updatePath(path);
 	  login.updatePath(path);
 	  //Test Data Con Json
-//	  this.Username = base.getJSONValue("Orange_test_POM", "Username");
-//	  this.Password = base.getJSONValue("Orange_test_POM", "Password");
+	  this.Username = base.getJSONValue("General", "Username");
+	  this.Password = base.getJSONValue("General", "Password");
 
 	  
 	//Test Data Con excel
-	  this.Username = base.getCellData("Orange_test_POM", 2, 0);
-	  this.Password = base.getCellData("Orange_test_POM", 2, 1);
+//	  this.Username = base.getCellData("Orange_test_POM", 2, 0);
+//	  this.Password = base.getCellData("Orange_test_POM", 2, 1);
   }
   
   @Test
