@@ -14,6 +14,8 @@ import javax.imageio.ImageIO;
 
 import java.util.Random;
 
+import org.apache.commons.io.FileSystemUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -127,19 +129,34 @@ public class Base {
 	}
 
 	public String createScreenshotsDIR(String x) {
-		
-		File theDir = new File(GlobalVariables.PATH_SCREENSHOTS+x);
-		if (!theDir.exists()){
-		    theDir.mkdirs();
-		   return theDir.getPath();
-		}else {
+
+		File theDir = new File(GlobalVariables.PATH_SCREENSHOTS + x);
+		if (theDir.exists()) {
+			deleteDIR(theDir);
+			theDir.mkdirs();
+			System.out.println("Dir genarted");
+			return theDir.getPath();
+		} else if (!theDir.exists()) {
+			theDir.mkdirs();
+			System.out.println("Dir genarted");
+			return theDir.getPath();
+		} else {
 			return theDir.getPath();
 		}
 	}
-	
+
+	public static void deleteDIR(File file) {
+		try {
+			FileUtils.deleteDirectory(file);
+			System.out.println("Directory or File deleted");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public String takeScreenshot(String fileName, String TCpathname) {
 		try {
-			String pathFileName = TCpathname +"/"+ fileName + ".png";
+			String pathFileName = TCpathname + "/" + fileName + ".png";
 			Screenshot screenshot = new AShot().takeScreenshot(driver);
 			ImageIO.write(screenshot.getImage(), "PNG", new File(pathFileName));
 			System.out.println(pathFileName);
@@ -158,7 +175,7 @@ public class Base {
 	 * 
 	 * @throws IOException
 	 */
-	public String takeScreenshot2(String fileName) {
+	public String takeScreenshot(String fileName) {
 		try {
 			String pathFileName = GlobalVariables.PATH_SCREENSHOTS + fileName + ".png";
 			Screenshot screenshot = new AShot().takeScreenshot(driver);
@@ -251,10 +268,10 @@ public class Base {
 	 */
 
 	public void SelectFromList(By locator, String index) {
-		Select select = new Select (driver.findElement(locator));
+		Select select = new Select(driver.findElement(locator));
 		try {
 			select.selectByVisibleText(index);
-			//select.selectByValue(index);
+			// select.selectByValue(index);
 		} catch (NoSuchElementException e) {
 			e.printStackTrace();
 		}
@@ -271,7 +288,7 @@ public class Base {
 		driver.manage().window().maximize();
 		implicityWait();
 	}
-	
+
 	/*
 	 * (Send Keys) Type method
 	 */
@@ -312,8 +329,6 @@ public class Base {
 		}
 
 	}
-	
-	
 
 	/*
 	 * is Displayed method
